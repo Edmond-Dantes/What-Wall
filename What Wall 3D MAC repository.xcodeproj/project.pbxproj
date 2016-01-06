@@ -15,6 +15,26 @@
 		5E6AA1751C3B678A00624F14 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1731C3B678A00624F14 /* MainMenu.xib */; };
 		5E6AA1801C3B678A00624F14 /* What_Wall_3D_MAC_repositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6AA17F1C3B678A00624F14 /* What_Wall_3D_MAC_repositoryTests.swift */; };
 		5E6AA18B1C3B678A00624F14 /* What_Wall_3D_MAC_repositoryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6AA18A1C3B678A00624F14 /* What_Wall_3D_MAC_repositoryUITests.swift */; };
+		5E6AA1A91C3B68B200624F14 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6AA1981C3B68B200624F14 /* Color.swift */; };
+		5E6AA1AA1C3B68B200624F14 /* CornerBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6AA1991C3B68B200624F14 /* CornerBlock.swift */; };
+		5E6AA1AB1C3B68B200624F14 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA19A1C3B68B200624F14 /* GameScene.sks */; };
+		5E6AA1AC1C3B68B200624F14 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6AA19B1C3B68B200624F14 /* GameScene.swift */; };
+		5E6AA1AD1C3B68B200624F14 /* HudOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6AA19C1C3B68B200624F14 /* HudOverlay.swift */; };
+		5E6AA1AE1C3B68B200624F14 /* JoyStick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6AA19D1C3B68B200624F14 /* JoyStick.swift */; };
+		5E6AA1AF1C3B68B200624F14 /* Maze.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6AA19E1C3B68B200624F14 /* Maze.swift */; };
+		5E6AA1B01C3B68B200624F14 /* MazeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6AA19F1C3B68B200624F14 /* MazeCell.swift */; };
+		5E6AA1B11C3B68B200624F14 /* MazeScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1A01C3B68B200624F14 /* MazeScene.sks */; };
+		5E6AA1B21C3B68B200624F14 /* MazeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6AA1A11C3B68B200624F14 /* MazeScene.swift */; };
+		5E6AA1B31C3B68B200624F14 /* MyParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1A21C3B68B200624F14 /* MyParticle.sks */; };
+		5E6AA1B41C3B68B200624F14 /* MyParticleSystem.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1A31C3B68B200624F14 /* MyParticleSystem.scnp */; };
+		5E6AA1B51C3B68B200624F14 /* MyParticleSystem1.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1A41C3B68B200624F14 /* MyParticleSystem1.scnp */; };
+		5E6AA1B61C3B68B200624F14 /* MyParticleSystem2.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1A51C3B68B200624F14 /* MyParticleSystem2.scnp */; };
+		5E6AA1B71C3B68B200624F14 /* MyParticleSystem3.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1A61C3B68B200624F14 /* MyParticleSystem3.scnp */; };
+		5E6AA1B81C3B68B200624F14 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6AA1A71C3B68B200624F14 /* Player.swift */; };
+		5E6AA1B91C3B68B200624F14 /* SmashBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6AA1A81C3B68B200624F14 /* SmashBlock.swift */; };
+		5E6AA1BC1C3B695C00624F14 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1BA1C3B695C00624F14 /* spark.png */; };
+		5E6AA1BD1C3B695C00624F14 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1BB1C3B695C00624F14 /* star.png */; };
+		5E6AA1BF1C3B696D00624F14 /* bluecircle.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1BE1C3B696D00624F14 /* bluecircle.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +69,26 @@
 		5E6AA1861C3B678A00624F14 /* What Wall 3D MAC repositoryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "What Wall 3D MAC repositoryUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E6AA18A1C3B678A00624F14 /* What_Wall_3D_MAC_repositoryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = What_Wall_3D_MAC_repositoryUITests.swift; sourceTree = "<group>"; };
 		5E6AA18C1C3B678A00624F14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5E6AA1981C3B68B200624F14 /* Color.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		5E6AA1991C3B68B200624F14 /* CornerBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CornerBlock.swift; sourceTree = "<group>"; };
+		5E6AA19A1C3B68B200624F14 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		5E6AA19B1C3B68B200624F14 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		5E6AA19C1C3B68B200624F14 /* HudOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudOverlay.swift; sourceTree = "<group>"; };
+		5E6AA19D1C3B68B200624F14 /* JoyStick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoyStick.swift; sourceTree = "<group>"; };
+		5E6AA19E1C3B68B200624F14 /* Maze.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maze.swift; sourceTree = "<group>"; };
+		5E6AA19F1C3B68B200624F14 /* MazeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MazeCell.swift; sourceTree = "<group>"; };
+		5E6AA1A01C3B68B200624F14 /* MazeScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MazeScene.sks; sourceTree = "<group>"; };
+		5E6AA1A11C3B68B200624F14 /* MazeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MazeScene.swift; sourceTree = "<group>"; };
+		5E6AA1A21C3B68B200624F14 /* MyParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticle.sks; sourceTree = "<group>"; };
+		5E6AA1A31C3B68B200624F14 /* MyParticleSystem.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = MyParticleSystem.scnp; sourceTree = "<group>"; };
+		5E6AA1A41C3B68B200624F14 /* MyParticleSystem1.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = MyParticleSystem1.scnp; sourceTree = "<group>"; };
+		5E6AA1A51C3B68B200624F14 /* MyParticleSystem2.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = MyParticleSystem2.scnp; sourceTree = "<group>"; };
+		5E6AA1A61C3B68B200624F14 /* MyParticleSystem3.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = MyParticleSystem3.scnp; sourceTree = "<group>"; };
+		5E6AA1A71C3B68B200624F14 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		5E6AA1A81C3B68B200624F14 /* SmashBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmashBlock.swift; sourceTree = "<group>"; };
+		5E6AA1BA1C3B695C00624F14 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		5E6AA1BB1C3B695C00624F14 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
+		5E6AA1BE1C3B696D00624F14 /* bluecircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluecircle.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +139,26 @@
 		5E6AA1681C3B678A00624F14 /* What Wall 3D MAC repository */ = {
 			isa = PBXGroup;
 			children = (
+				5E6AA1BE1C3B696D00624F14 /* bluecircle.png */,
+				5E6AA1BA1C3B695C00624F14 /* spark.png */,
+				5E6AA1BB1C3B695C00624F14 /* star.png */,
+				5E6AA1981C3B68B200624F14 /* Color.swift */,
+				5E6AA1991C3B68B200624F14 /* CornerBlock.swift */,
+				5E6AA19A1C3B68B200624F14 /* GameScene.sks */,
+				5E6AA19B1C3B68B200624F14 /* GameScene.swift */,
+				5E6AA19C1C3B68B200624F14 /* HudOverlay.swift */,
+				5E6AA19D1C3B68B200624F14 /* JoyStick.swift */,
+				5E6AA19E1C3B68B200624F14 /* Maze.swift */,
+				5E6AA19F1C3B68B200624F14 /* MazeCell.swift */,
+				5E6AA1A01C3B68B200624F14 /* MazeScene.sks */,
+				5E6AA1A11C3B68B200624F14 /* MazeScene.swift */,
+				5E6AA1A21C3B68B200624F14 /* MyParticle.sks */,
+				5E6AA1A31C3B68B200624F14 /* MyParticleSystem.scnp */,
+				5E6AA1A41C3B68B200624F14 /* MyParticleSystem1.scnp */,
+				5E6AA1A51C3B68B200624F14 /* MyParticleSystem2.scnp */,
+				5E6AA1A61C3B68B200624F14 /* MyParticleSystem3.scnp */,
+				5E6AA1A71C3B68B200624F14 /* Player.swift */,
+				5E6AA1A81C3B68B200624F14 /* SmashBlock.swift */,
 				5E6AA1691C3B678A00624F14 /* AppDelegate.swift */,
 				5E6AA16B1C3B678A00624F14 /* GameView.swift */,
 				5E6AA16D1C3B678A00624F14 /* GameViewController.swift */,
@@ -232,8 +292,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E6AA1BF1C3B696D00624F14 /* bluecircle.png in Resources */,
+				5E6AA1BC1C3B695C00624F14 /* spark.png in Resources */,
+				5E6AA1B71C3B68B200624F14 /* MyParticleSystem3.scnp in Resources */,
+				5E6AA1B51C3B68B200624F14 /* MyParticleSystem1.scnp in Resources */,
+				5E6AA1B61C3B68B200624F14 /* MyParticleSystem2.scnp in Resources */,
+				5E6AA1AB1C3B68B200624F14 /* GameScene.sks in Resources */,
+				5E6AA1BD1C3B695C00624F14 /* star.png in Resources */,
+				5E6AA1B31C3B68B200624F14 /* MyParticle.sks in Resources */,
 				5E6AA1721C3B678A00624F14 /* Assets.xcassets in Resources */,
+				5E6AA1B11C3B68B200624F14 /* MazeScene.sks in Resources */,
 				5E6AA1701C3B678A00624F14 /* art.scnassets in Resources */,
+				5E6AA1B41C3B68B200624F14 /* MyParticleSystem.scnp in Resources */,
 				5E6AA1751C3B678A00624F14 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,7 +329,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E6AA1B91C3B68B200624F14 /* SmashBlock.swift in Sources */,
+				5E6AA1AC1C3B68B200624F14 /* GameScene.swift in Sources */,
+				5E6AA1AE1C3B68B200624F14 /* JoyStick.swift in Sources */,
+				5E6AA1AF1C3B68B200624F14 /* Maze.swift in Sources */,
 				5E6AA16C1C3B678A00624F14 /* GameView.swift in Sources */,
+				5E6AA1B81C3B68B200624F14 /* Player.swift in Sources */,
+				5E6AA1B01C3B68B200624F14 /* MazeCell.swift in Sources */,
+				5E6AA1AA1C3B68B200624F14 /* CornerBlock.swift in Sources */,
+				5E6AA1A91C3B68B200624F14 /* Color.swift in Sources */,
+				5E6AA1B21C3B68B200624F14 /* MazeScene.swift in Sources */,
+				5E6AA1AD1C3B68B200624F14 /* HudOverlay.swift in Sources */,
 				5E6AA16E1C3B678A00624F14 /* GameViewController.swift in Sources */,
 				5E6AA16A1C3B678A00624F14 /* AppDelegate.swift in Sources */,
 			);
