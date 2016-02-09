@@ -55,7 +55,7 @@ class HudOverlay: SKScene {
         
         
         
-        
+        //self.resignFirstResponder()
         
         
     }
@@ -64,9 +64,25 @@ class HudOverlay: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /*
+    override func mouseUp(theEvent: NSEvent) {
+        super.mouseUp(theEvent)
+//        self.view!.nextResponder!.mouseUp(theEvent)
+        
+    }
+    
+    override func mouseDown(theEvent: NSEvent) {
+        Swift.print("mouseDown - HudOverlay")
+        super.mouseDown(theEvent)
+        //Swift.print("\(self.nextResponder)")
+        
+        
+    }
+
+    
+    
     override func keyDown(theEvent: NSEvent) {
         //gameScene.keyDown(theEvent)
+        Swift.print("KeyDown - HudOverlay")
         super.keyDown(theEvent)
     }
     
@@ -74,7 +90,7 @@ class HudOverlay: SKScene {
         //gameScene.keyUp(theEvent)
         super.keyUp(theEvent)
     }
-    */
+    
     override func update(currentTime: NSTimeInterval) {
 
        /* if hasMoveToView{

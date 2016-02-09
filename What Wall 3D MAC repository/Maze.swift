@@ -188,7 +188,7 @@ class Maze: SKNode {
             self.mazeNumberMatrix[exitPoint] = 4  //exit point
             print("finish generateMazeRecursion")
             print("path count = \(self.escapePath.count)")
-        }while self.escapePath.count <= (MAZE_ROWS - 3) * 2 + 1// maxPathCount > MAZE_ROWS//self.level + 1//deadEndCount != MAX_DEADENDS
+        }while self.escapePath.count <= self.level * 2 + 1//(MAZE_ROWS - 3) * 2 + 1// maxPathCount > MAZE_ROWS//self.level + 1//deadEndCount != MAX_DEADENDS
         
         //allow only one path
         for pathPoint in escapePath{
@@ -408,9 +408,9 @@ class Maze: SKNode {
         return
         }
         */
-        if escapePath.count >= (MAZE_ROWS - 3) * 2 + 1{//MAZE_ROWS - 2{
-            return
-        }
+        //if escapePath.count >= (MAZE_ROWS - 3) * 2 + 1{//MAZE_ROWS - 2{
+        //    return
+        //}
         
         ++visitedCellCount
         
