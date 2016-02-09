@@ -280,11 +280,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.activeSmashBlock = arrayOfBlocks[blockArrayCounter]
         print( "\(self.activeSmashBlock!.rawValue)")
         
-        //mySmashBlocks[self.activeSmashBlock!]?.color = self.smashingColor
         
-        //mySmashBlocks[self.exitBlock]!.color = self.exitBlockColor
         
-/******///self.exitBlock = SmashBlock.randomBlockPosition()
         
         //-------------------
         // Load Player
@@ -503,7 +500,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         wallTimer = 0
         smashBlockStatus = .waiting
         smashStatusChanged = true
-        
+        /*
         let smashBlockArray = SmashBlock.array
         for bPosition in smashBlockArray{
             //mySmashBlocks[bPosition] =  SmashBlock(blockPos: bPosition)
@@ -515,8 +512,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             smashBlock.position = smashBlock.orginalPosition
             myPresentationSmashBlocks[self.activeSmashBlock!]!.position = myPresentationSmashBlocks[self.activeSmashBlock!]!.orginalPosition
         }
+        */
         
         reloadOriginalTrapPositions(0)
+        
         
         //updatePresentationLayer()
     }
@@ -2192,6 +2191,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 self.resetForLevelChange()
                 
+                self.reloadSceneTime()
                 
             }
             
@@ -2241,7 +2241,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     }
                 }
             }
-            self.reloadSceneTime()
+            //self.reloadSceneTime()
             
             self.islevelChange = false
             
