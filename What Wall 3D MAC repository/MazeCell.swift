@@ -1,51 +1,61 @@
-//
-//  MazeCell.swift
-//  Roly Moly
-//
-//  Created by Future on 1/20/15.
-//  Copyright (c) 2015 Future. All rights reserved.
-//
+import Foundation
+import SceneKit
+import QuartzCore
 
-//import Foundation
-import SpriteKit
-
-
-class MazeCell:SKSpriteNode {
+class MazeCell:SCNNode{
     
-    enum positionType{
-        case topLeftCorner, topRightCorner, bottomLeftCorner, bottomRightCorner
-        case leftEgde, rightEdge, topEdge, bottomEdge
-        case center
-    }
     
     enum wallLocations{
         case up, down, left, right
     }
+    enum type{
+        case square, border
+    }
+    var cellType:type
     
-    //    var path:
-    var cellPosition:positionType
+    
     var walls:[wallLocations:Bool] = [ .up: false, .down: false, .left: false, .right: false ]
+    
     var gridPoint:Int
     var visited:Bool = false
-    
-    init(cellType:positionType, gridPoint:Int, cellSize: CGSize){
-        
-        self.cellPosition = cellType
-        self.gridPoint = gridPoint
-        super.init(texture: nil, color: Color.blackColor(), size: cellSize)
-        
-        
-        
-        
+    var alpha:CGFloat{
+        get{
+            return self.alpha
+        }
+        set{
+            self.geometry?.firstMaterial?.transparency = newValue
+        }
+    }
+    var color:NSColor{
+        get{
+            return self.color
+        }
+        set{
+            self.geometry?.firstMaterial?.diffuse.contents = newValue
+        }
     }
     
     
+    init(gridPoint:Int, size: CGSize){
+        
+        self.gridPoint = gridPoint
+        self.cellType = .square
+        super.init()
+        
+        
+        self.geometry = SCNPlane(width: size.width, height: size.height)
+        self.position = SCNVector3(x: 0, y: 0, z: 0)
+        self.rotation = SCNVector4(x: 0, y: 0, z: 0, w: CGFloat(M_PI / 2) )
+        
+        //self.geometry?.firstMaterial = SCNMaterial()
+        self.geometry?.firstMaterial?.doubleSided = true
+        
+    }
     
-    
-    
-    required init?(coder aDecoder: NSCoder) {
+    required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     
 }

@@ -87,6 +87,27 @@ class SmashBlock: SKSpriteNode {
             }
             
         }
+        
+        func perpendicularArray()-> [blockPosition]{
+            switch self{
+            case .leftTop:
+                return [.topLeft, .topRight, .bottomLeft, .bottomRight]
+            case .rightTop:
+                return [.topLeft, .topRight, .bottomLeft, .bottomRight]
+            case  .leftBottom:
+                return [.topLeft, .topRight, .bottomLeft, .bottomRight]
+            case .rightBottom:
+                return [.topLeft, .topRight, .bottomLeft, .bottomRight]
+            case .topLeft:
+                return [.leftBottom, .leftTop, .rightBottom, .rightTop]
+            case .bottomLeft:
+                return [.leftBottom, .leftTop, .rightBottom, .rightTop]
+            case .topRight:
+                return [.leftBottom, .leftTop, .rightBottom, .rightTop]
+            case .bottomRight:
+                return [.leftBottom, .leftTop, .rightBottom, .rightTop]
+            }
+        }
     }
     
     
@@ -165,6 +186,8 @@ class SmashBlock: SKSpriteNode {
     //smashing block objects
     init(blockPos:blockPosition, color: SKColor){
         
+        
+        
         let initColor = color//Color.yellowColor()
         let initSize = CGSize(width: 0, height: 0)
         var blockCenter:CGPoint = CGPoint()
@@ -175,12 +198,15 @@ class SmashBlock: SKSpriteNode {
         
         super.init(texture: nil, color: initColor, size: initSize)
         
+        self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        
         let pixelBuffer:CGFloat = 2
         
         let horizontalSize = CGSize(width: gameFrame.width - cornerBlockFrame.width - pixelBuffer/2, height: gameFrame.height/2 - cornerBlockFrame.height - pixelBuffer)
         let verticalSize = CGSize(width: gameFrame.width/2 - cornerBlockFrame.width - pixelBuffer, height: gameFrame.height - cornerBlockFrame.height - pixelBuffer/2)
         var axis = CGVector(dx: 0, dy: 0)
-        
+        //self.texture = SKTexture(imageNamed: "skeletonarm")
+        self.colorBlendFactor = 0.5
         
         switch blockPos {
             

@@ -112,7 +112,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     //private let CONSTANT_WALLSPEED = 1000
-    private var level:Int = 1
+    var currentStage:Int = 0 //update in stageUpLevelUp function
+    private var level:Int = 60
     /*private*/ var playerLives:Int = 9
     /*private*/ let playerLivesMAX:Int = 9
     //private var levelExitsArray:[SmashBlock.blockPosition] = SmashBlock.levelExitArray(1)//self.level)
@@ -232,6 +233,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         myLevelNumberLabel.name = "world"
         myLevelNumberLabel.zPosition = -100
         world.addChild(myLevelNumberLabel)
+            
+        LEVEL = self.level
         myLevelNumberLabel.text = "LEVEL \(LEVEL)"
 /************/
             myLevelNumberLabel.hidden = true
@@ -433,19 +436,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //burst.hidden = true
         }
         
-        //my Maze
+        //my Maze *************
 //        self.addChild(myMaze)
-            if myMaze == nil{
+            //if myMaze == nil{
                 myMaze = Maze(level: CGFloat(self.level))
+                self.currentStage = myMaze!.startPoint
                 
-                
+            /*
             }else{
                 if self.level != LEVEL{
                     self.level = LEVEL
                     // myMaze?.removeFromParent()
                     myMaze = Maze(level: CGFloat(self.level))
                 }
-            }
+            }*/
         
         //LOAD WORLD
         
@@ -462,9 +466,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
         //self.speed = SPEED_PERCENTAGE
+            
+            //self.reloadSceneTime()
         
         }
-        
+        self.reloadSceneTime()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -490,7 +496,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         WALLSPEED = CONSTANT_WALLSPEED
         myGravityFieldNode.strength = 9.8 * Float(SPEED_PERCENTAGE)
         mySmashBlocks[self.exitBlock]!.color = self.wallColor
-        /******/ self.exitBlock = myMaze!.levelExitArray[self.stageCount * 2] //Exits include the inbetween paths
+        // ********************
+        //below done also in SmashBlockLogic... waiting
+        /******/ self.exitBlock = myMaze!.stageExitsArray[currentStage]![0] //Exits include the inbetween paths
+
+        // ********************
+        
         //self.levelExitsArray[self.stageCount]//SmashBlock.randomBlockPosition()
         arrayOfBlocks.shuffle()
         //mySmashBlocks[self.exitBlock]?.color = self.exitBlockColor
@@ -523,6 +534,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func updateLevelMaze(level:Int){
         
         myMaze = Maze(level: CGFloat(level))
+        self.currentStage = myMaze!.startPoint
         //self.addChild(myMaze)
     }
     
@@ -955,10 +967,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         controller.isChangedDirection = true
                         isKeyPressed[.left] = true
                     }
-                default:
+                case 46://M
+                    //do nothing
+                    print("This should show the map")
+                    return
+                case 49://space bar
                     //controller.joyStickDirection = .neutral
                     self.isFirstRound = false
-                //***    myRestartLabel.hidden = true
+                    //***    myRestartLabel.hidden = true
                     
                     if let player = myPlayer{
                         if !player.isDying && !player.isAlive{
@@ -966,6 +982,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                             
                         }
                     }
+                    
+                default:
+                    print("\(key)")
+                    return
                     
                 }
             //}
@@ -1112,8 +1132,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let pixelBuffer:CGFloat = 2
         
-        if self.smashBlockStatus == .returning{
-            smashSpeed =  WALLSPEED / WALLSPEED * 5
+        if self.contactSmashStatus/*self.smashBlockStatus*/ == .returning{
+            //smashSpeed =  /* WALLSPEED / WALLSPEED */ 5 * SPEED_PERCENTAGE
             sign = -sign
         }
         
@@ -1717,6 +1737,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: SKPhysicsContactDelegate
     
+    var contactSmashStatus:SmashBlock.activity = .waiting
+    
     func didBeginContact(contact: SKPhysicsContact) {
         let pixelBuffer:CGFloat = 2//10.0 * 2
         
@@ -1758,6 +1780,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                             myPlayer!.cornerHitPosition = myPlayer!.position
                             //myPlayer?.cornerHitPosition = contact.contactPoint
                             //self.smashBlockCornerHit(myPlayer!)
+                            //self.smashBlockEdgeHit(myPlayer!)
+                            
+                            self.contactSmashStatus = self.smashBlockStatus
+                            
                             
                         }
                         
@@ -1832,65 +1858,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         if let activeBlock = self.activeSmashBlock {
                             
                             if myPlayer!.contactStatic == false {
-                                /*switch activeBlock
-                                {
-                                case .leftBottom:
-                                    if smashPosition == .rightBottom{
-                                        myPlayer!.hitCount++
-                                        myPlayer!.contactStatic = true
-                                        moveAreaBy.x = gameFrame.width
-                                        playerMoveAreaPosition.x = cornerBlockFrame.width
-                                    }
-                                case .leftTop:
-                                    if smashPosition == .rightTop{
-                                        myPlayer!.hitCount++
-                                        myPlayer!.contactStatic = true
-                                        moveAreaBy.x = gameFrame.width
-                                        playerMoveAreaPosition.x = cornerBlockFrame.width
-                                    }
-                                case .rightBottom:
-                                    if smashPosition == .leftBottom{
-                                        myPlayer!.hitCount++
-                                        myPlayer!.contactStatic = true
-                                        moveAreaBy.x = -gameFrame.width
-                                        playerMoveAreaPosition.x = gameFrame.width - cornerBlockFrame.width
-                                    }
-                                case .rightTop:
-                                    if smashPosition == .leftTop{
-                                        myPlayer!.hitCount++
-                                        myPlayer!.contactStatic = true
-                                        moveAreaBy.x = -gameFrame.width
-                                        playerMoveAreaPosition.x = gameFrame.width - cornerBlockFrame.width
-                                    }
-                                case .topLeft:
-                                    if smashPosition == .bottomLeft{
-                                        myPlayer!.hitCount++
-                                        myPlayer!.contactStatic = true
-                                        moveAreaBy.y = -gameFrame.height
-                                        playerMoveAreaPosition.y = gameFrame.height - cornerBlockFrame.height
-                                    }
-                                case .topRight:
-                                    if smashPosition == .bottomRight{
-                                        myPlayer!.hitCount++
-                                        myPlayer!.contactStatic = true
-                                        moveAreaBy.y = -gameFrame.height
-                                        playerMoveAreaPosition.y = gameFrame.height - cornerBlockFrame.height
-                                    }
-                                case .bottomLeft:
-                                    if smashPosition == .topLeft{
-                                        myPlayer!.hitCount++
-                                        myPlayer!.contactStatic = true
-                                        moveAreaBy.y = gameFrame.height
-                                        playerMoveAreaPosition.y = cornerBlockFrame.height
-                                    }
-                                case .bottomRight:
-                                    if smashPosition == .topRight{
-                                        myPlayer!.hitCount++
-                                        myPlayer!.contactStatic = true
-                                        moveAreaBy.y = gameFrame.height
-                                        playerMoveAreaPosition.y = cornerBlockFrame.height
-                                    }
-                                }*/
                                 switch activeBlock
                                 {
                                 case .leftBottom, .leftTop:
@@ -1940,7 +1907,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                                 */
                                 
                                 
-                                if smashPosition == self.exitBlock{
+                                if smashPosition == self.exitBlock && self.activeSmashBlock!.opposite() == self.exitBlock{
                                     
                                     
                                     player.velocity = mySmashBlocks[self.activeSmashBlock!]!.physicsBody!.velocity
@@ -2073,26 +2040,94 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    
+    var leavingExitBlock: SmashBlock.blockPosition = .leftTop//self.exitBlock
+    
     func stageUpLevelUp(){
-        ++self.stageCount
-        STAGE = self.stageCount
-        if self.stageCount > (myMaze!.escapePath.count)/2 - 1{ //escapePath includes the inbetween paths
-            self.stageCount = 0
+        
+        
+        func hasContinuedPath(exitSidePartA:SmashBlock.blockPosition, exitSidePartB:SmashBlock.blockPosition, direction:MazeCell.wallLocations)->Bool{
+            
+            self.leavingTime += 0.5
+            
+            var continueOnPath:Bool = false
+            
+            for exit in myMaze!.stageExitsArray[self.currentStage]!{
+                if exit == exitSidePartA || exit == exitSidePartB{
+                    continueOnPath = true
+                }
+            }
+            
+            for otherExit in exitSidePartA.perpendicularArray(){
+                for exit in myMaze!.stageExitsArray[self.currentStage]!{
+                    if otherExit == exit{
+                        continueOnPath = false
+                    }
+                    
+                }
+            }
+            
+            return continueOnPath
+        }
+        
+        
+        switch self.leavingExitBlock{//self.exitBlock{
+        case .topLeft, .topRight:
+            repeat{
+                self.currentStage = self.currentStage + myMaze!.MAZE_ROWS*2
+            }while hasContinuedPath(.topLeft, exitSidePartB: .topRight, direction: .up)
+        case .bottomLeft, .bottomRight:
+            repeat{
+                self.currentStage = self.currentStage - myMaze!.MAZE_ROWS*2
+            }while hasContinuedPath(.bottomLeft, exitSidePartB: .bottomRight, direction: .down)
+        case .rightBottom, .rightTop:
+            repeat{
+                self.currentStage = self.currentStage + 2
+            }while hasContinuedPath(.rightBottom, exitSidePartB: .rightTop, direction: .right)
+        case .leftBottom, .leftTop:
+            repeat{
+                self.currentStage = self.currentStage - 2
+            }while hasContinuedPath(.leftBottom, exitSidePartB: .leftTop, direction: .left)
+        }
+        
+        /*
+        func isPlayerMovingToNewAreaVertically()->Bool{
+            var vertically:Bool = false
+            
+            if self.leavingVelocity.dx.abs() > self.leavingVelocity.dy.abs(){
+                vertically = false
+            }else if self.leavingVelocity.dy.abs() > self.leavingVelocity.dx.abs(){
+                vertically = true
+            }
+            
+            return vertically
+        }
+        
+        if isPlayerMovingToNewAreaVertically(){ //moving vertically
+            
+            if self.leavingVelocity.dy > 0{ //moving up
+                self.currentStage = self.currentStage + myMaze!.MAZE_ROWS*2
+            }else if self.leavingVelocity.dy <= 0{ //moving down
+                self.currentStage = self.currentStage - myMaze!.MAZE_ROWS*2
+            }
+            
+        }else if !isPlayerMovingToNewAreaVertically(){ //moving horizontally
+            
+            if self.leavingVelocity.dx > 0{ //moving right
+                self.currentStage = self.currentStage + 2
+            }else if self.leavingVelocity.dx <= 0{ //moving left
+                self.currentStage = self.currentStage - 2
+            }
+        }
+        */
+        STAGE = self.currentStage
+        /*
+        if self.currentStage == myMaze!.exitPoint{
+            self.islevelChange = true
             self.level++
             LEVEL = self.level
-            STAGE = self.stageCount
-            myLevelNumberLabel.removeFromParent()
-            self.world.addChild(myLevelNumberLabel)
-            
-            //add new level
-            self.updateLevelMaze(self.level)
-            
-            
-            
-            
-            self.islevelChange = true
-            //return
         }
+        */
     }
     
     func arrivedInNewArea(playerPosition:CGPoint, playerVelocity: CGVector){
@@ -2114,7 +2149,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     var isLeavingOldArea:Bool = false
-    let leavingTime:CFTimeInterval = 0.5
+    var leavingTime:CFTimeInterval = 0//0.5
     var leavingVelocity:CGVector = CGVector(dx: 0, dy: 0)
     var arrivingPosition:CGPoint = CGPoint(x: 0, y: 0)
    
@@ -2145,9 +2180,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         myPlayer!.removeFromParent()
         myPresentationPlayer!.removeFromParent()
         
+        
+        self.leavingExitBlock = self.exitBlock
+        
         reloadSceneTime()
         
         self.isLeavingOldArea = true
+        
+        self.stageUpLevelUp()
+        
         //self.leavingVelocity = playerVelocity
         
         //add stage change animation here
@@ -2187,10 +2228,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.runAction(SKAction.waitForDuration(0.5)){
                 //self.paused = false
                 self.isMovingToNextArea = false
+                self.leavingTime = 0
+                
+                
                 print("arrived at new area")
                 
-                self.resetForLevelChange()
+                //self.stageUpLevelUp()
                 
+                self.resetForLevelChange()
+        
                 self.reloadSceneTime()
                 
             }
@@ -2199,6 +2245,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func resetForLevelChange(){
+        
+        if self.currentStage == myMaze!.exitPoint{
+            self.islevelChange = true
+            self.level++
+            LEVEL = self.level
+        }
+        
         if self.islevelChange{
             
             self.isFirstRound = true
@@ -2243,7 +2296,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             //self.reloadSceneTime()
             
+            //add new level
+            //self.level++
+            //LEVEL = self.level
+            self.updateLevelMaze(self.level)
+            
             self.islevelChange = false
+            
             
         }
     }
@@ -2321,6 +2380,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var sizeEffectSwitch:Bool = false
     private var sizeEffectSwitchCounter = 0
     
+    var needsRecoveryTimeFromPause:Bool = false
    
     override func update(currentTime: CFTimeInterval) {
         // giving a frame delay for the 3D side to catch up 
@@ -2349,10 +2409,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         
+        /*if needsRecoveryTimeFromPause{
+            lastUpdatedTime = currentTime
+            needsRecoveryTimeFromPause = false
+        }*/
+        
         deltaTime = currentTime - lastUpdatedTime
         lastUpdatedTime = currentTime
         
-        if myPlayer!.isDying{self.deathScene(deltaTime)}
+        if myPlayer!.isDying{
+            if needsRecoveryTimeFromPause{
+                deltaTime = 0
+                needsRecoveryTimeFromPause = false
+            }
+            // ***************** //
+            self.deathScene(deltaTime)
+            // ***************** //
+        }
+        if needsRecoveryTimeFromPause{
+            //lastUpdatedTime = currentTime
+            deltaTime = 0.25 // *TIME_UNTIL_TRAP / 2*
+            needsRecoveryTimeFromPause = false
+        }
         
         self.SmashBlockLogic(deltaTime)
         
@@ -2533,6 +2611,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     trap = arrayOfBlocks[blockArrayCounter]
                     self.activeSmashBlock = trap
                     mySmashBlocks[trap]!.color = self.smashingColor
+                    
+                    //blah blah
+                    //for
+                    if myMaze!.stageExitsArray[currentStage] != nil{
+                        //let tempArray = myMaze!.stageExitsArray[currentStage]
+                        for exit in myMaze!.stageExitsArray[currentStage]!{
+                            if trap.opposite() == exit{
+                                self.exitBlock = exit
+                            }
+                        }
+                        
+                    }
                     //regular logic change back
                     if trap.opposite() == self.exitBlock{
                         mySmashBlocks[self.exitBlock]!.color = self.exitBlockColor

@@ -34,6 +34,8 @@ var gameScene:GameScene!
 
 class GameViewController: NSViewController, SCNSceneRendererDelegate, SCNPhysicsContactDelegate{ //, SKSceneDelegate{//, SKPhysicsContactDelegate  {
     
+    var isMapKeyPressed:[keys:Bool] = [keys.left: false, .right: false, .up: false, .down: false]
+    
     var renderCount:Int = 0
     
     @IBOutlet weak var gameView: GameView!
@@ -146,17 +148,222 @@ class GameViewController: NSViewController, SCNSceneRendererDelegate, SCNPhysics
 //        self.nextResponder!.mouseUp(theEvent)
     }
     
+    var currentStageMapPosition:SCNVector3 = SCNVector3(x: 0, y: 0, z: 0)
+    func showMap(){
+        //self.myStageNode.hidden = true
+        
+        myScene.rootNode.addChildNode(myMaze!)
+        let currentStage = myGameScene!.currentStage
+        currentStageMapPosition = myMaze!.mazeCellMatrix[currentStage]!.position
+
+        myMaze!.mazeCellMatrix[currentStage]!.hidden = true
+        myMaze!.position = SCNVector3(myStageNode.position.x - currentStageMapPosition.x, myStageNode.position.y -  currentStageMapPosition.y, 0)
+    
+    }
+    
+    func removeMap(){
+        let currentStage = myGameScene!.currentStage//myMaze!.escapePath[STAGE * 2]
+        //let currentStageMapPosition = myMaze!.mazeCellMatrix[currentStage]!.position
+        
+        myMaze!.mazeCellMatrix[currentStage]!.hidden = false
+        myMaze!.removeFromParentNode()
+    }
+    
+    func cameraDistanceFromCurrentStage()->CGFloat{
+        var distance:CGFloat = 0
+        distance = sqrt( pow(self.myCameraNode.position.x - myStageNode.position.x, 2) + pow(self.myCameraNode.position.y - myStageNode.position.y, 2))
+        
+        return distance
+    }
+    
+    var isShowingMap:Bool = false
+    //var hasMapView:Bool = false
+    var currentCameraPosition = SCNVector3(x: 0, y: 0, z: 0)
+    var showingMapTime:CFTimeInterval = 0.5
+    var returningToCurrentStageMapTime:CFTimeInterval = 0.5
+    var isReturnToCurrentStageMap:Bool = false
+    
+   
+    
     override func keyDown(theEvent: NSEvent){
         Swift.print("KeyDown - GameViewController")
-        self.myGameScene.keyDown(theEvent)
+        
+        let key = theEvent.keyCode
+        switch key{
+            
+        case 126://up
+            if isShowingMap && !isMapKeyPressed[.down]!{
+                isMapKeyPressed[.up] = true
+            }
+        case 124://right
+            if isShowingMap && !isMapKeyPressed[.left]!{
+                isMapKeyPressed[.right] = true
+            }
+        case 125://down
+            if isShowingMap && !isMapKeyPressed[.up]!{
+                isMapKeyPressed[.down] = true
+            }
+        case 123://left
+            if isShowingMap && !isMapKeyPressed[.right]!{
+                isMapKeyPressed[.left] = true
+            }
+            
+        case 46://M
+            
+            if /*!myPlayer!.isAlive || myGameScene.isFirstRound || */ !myGameScene.isMovingToNextArea{
+                if !isShowingMap && didReturnFromMap{
+                    print("View Controller starting to show map")
+                    print("playerNode x y = \(myPlayerNode.position.x), \(myPlayerNode.position.y)")
+                    print("cameraNode x y = \(self.myCameraNode.position.x), \(self.myCameraNode.position.y)")
+                    print("currentCameraNode x y = \(self.currentCameraPosition.x), \(self.currentCameraPosition.y)")
+                    //myCameraNode.constraints = nil
+                    //myCameraNode.position = cameraStartPosition
+                    myGameScene.paused = true
+                    // --------------------------------
+                    // need to pause 3D particle system here
+                    // --------------------------------
+                    
+                    didReturnFromMap = false
+                    self.showMap()
+                    
+                    SCNTransaction.begin()
+                    SCNTransaction.setAnimationDuration(self.showingMapTime)
+                    
+                    myCameraNode.position.x = myPlayerNode.position.x//cameraStartPosition.x
+                    myCameraNode.position.y = myPlayerNode.position.y//cameraStartPosition.y
+                    myCameraNode.position.z = 100
+                    
+                    
+                    SCNTransaction.setCompletionBlock(
+                        {
+                            self.isShowingMap = true
+                            self.isMapKeyPressed[.up] = false
+                            self.isMapKeyPressed[.right] = false
+                            self.isMapKeyPressed[.down] = false
+                            self.isMapKeyPressed[.left] = false
+                            self.mapLastUpdateTime = self.mapCurrentTime
+                            
+                            
+                            //self.hasMapView = true
+                            self.myCameraNode.constraints = nil
+                            self.myCameraNode.position.x = myPlayerNode.position.x//cameraStartPosition.x
+                            self.myCameraNode.position.y = myPlayerNode.position.y//cameraStartPosition.y
+                            
+                            //self.showMap()
+                            
+                        }
+                    )
+                    SCNTransaction.commit()
+                }else if isShowingMap{
+                    //myCameraNode.constraints = nil
+                    //deathCameraPosition.x = currentCameraPosition.x
+                    //deathCameraPosition.y = currentCameraPosition.y
+                    isShowingMap = false
+                    
+                    isMapKeyPressed[.up] = false
+                    isMapKeyPressed[.right] = false
+                    isMapKeyPressed[.down] = false
+                    isMapKeyPressed[.left] = false
+                    
+                    //self.removeMap()
+                    self.myStageNode.hidden = false
+                    self.isReturnToCurrentStageMap = true
+                    //myGameScene.paused = false
+                    
+                    self.returningToCurrentStageMapTime = ( 1 ) * CFTimeInterval(self.cameraDistanceFromCurrentStage() / myMaze!.maxMapAreaXValue) // / myMaze!.myMazeCellSize.height)
+                    
+                    SCNTransaction.begin()
+                    SCNTransaction.setAnimationDuration(self.returningToCurrentStageMapTime)
+                    
+                    myCameraNode.position.x = myPlayerNode.position.x
+                    myCameraNode.position.y = myPlayerNode.position.y
+                    //self.myCameraNode.position = self.currentCameraPosition
+                    //myCameraNode.position = cameraStartPosition
+                    
+                    SCNTransaction.setCompletionBlock(
+                        {
+                            self.isReturnToCurrentStageMap = false
+                            SCNTransaction.begin()
+                            SCNTransaction.setAnimationDuration(self.showingMapTime)
+                            self.myCameraNode.position = self.currentCameraPosition
+                            SCNTransaction.setCompletionBlock(
+                                {
+                                    self.removeMap()
+                                    //self.myCameraNode.constraints = [SCNConstraint()]
+                                    self.didReturnFromMap = true
+                                    self.myGameScene.paused = false
+                                    // --------------------------------
+                                    // need to resume 3D particle system here
+                                    // --------------------------------
+                                    
+                                    self.myCameraNode.position = self.currentCameraPosition
+                                    print("View Controller finished showing map")
+                                    print("playerNode x y = \(myPlayerNode.position.x), \(myPlayerNode.position.y)")
+                                    print("cameraNode x y = \(self.myCameraNode.position.x), \(self.myCameraNode.position.y)")
+                                    print("currentCameraNode x y = \(self.currentCameraPosition.x), \(self.currentCameraPosition.y)")
+                                }
+                            )
+                            SCNTransaction.commit()
+                        }
+                    )
+                    SCNTransaction.commit()
+                }
+
+            }
+        case 35://P
+            if !myPlayer!.isAlive || myGameScene.isFirstRound || myGameScene.isMovingToNextArea{
+                //myGameScene.paused = false
+            }else{
+                myGameScene.paused = !myGameScene.paused
+            }
+            
+        default:
+            print("View Controller KeyDown")
+            break
+        }
+        
+        if !myGameScene.paused{
+            self.myGameScene.keyDown(theEvent)
+        }
         //myHudOverlay.keyDown(theEvent)
         //gameScene.keyDown(theEvent)
     }
     
     override func keyUp(theEvent: NSEvent) {
+        
+        let key = theEvent.keyCode
+        switch key{
+            
+        case 126://up
+            if isShowingMap{
+                isMapKeyPressed[.up] = false
+            }
+        case 124://right
+            if isShowingMap{
+                isMapKeyPressed[.right] = false
+            }
+        case 125://down
+            if isShowingMap{
+                isMapKeyPressed[.down] = false
+            }
+        case 123://left
+            if isShowingMap{
+                isMapKeyPressed[.left] = false
+            }
+        default:
+            if isShowingMap{
+                
+            }
+            break
+        }
+    
+    
+        
         self.myGameScene.keyUp(theEvent)
         //myHudOverlay.keyUp(theEvent)
         //gameScene.keyUp(theEvent)
+        
+        
     }
     
     func deathEffectUpdate(){
@@ -285,22 +492,95 @@ class GameViewController: NSViewController, SCNSceneRendererDelegate, SCNPhysics
     
     var cameraMovingtoNewAreaPosition:SCNVector3 = SCNVector3(x: 0 , y: 0, z: 0)
     var leavingLastUpdateTime: NSTimeInterval = 0
-    var leavingDeltaTime: NSTimeInterval = 0
+    var leavingAreaTime: NSTimeInterval = 0
     
     var willChangeCameraForNewArea:Bool = false
     var didChangeCameraForNewArea:Bool = false
+    var didReturnFromMap:Bool = true
+    
+    var mapLastUpdateTime: NSTimeInterval = 0
+    var mapDeltaTime: NSTimeInterval = 0
+    var mapCurrentTime: NSTimeInterval = 0
+    
+    //var deathCameraPosition:SCNVector3 = SCNVector3(x: 0 , y: 0, z: 0)
     
     func cameraUpdate(currentTime: NSTimeInterval){
+        /*
+        if !didReturnFromMap{
+            if myCameraNode.presentationNode.position.z <= currentCameraPosition.z + 10{
+                //didReturnFromMap = true
+                //isShowingMap = false
+                myCameraNode.position.x = currentCameraPosition.x
+                myCameraNode.position.y = currentCameraPosition.y
+                //myGameScene.paused = false
+                return
+            }
+            
+        }
+        */
         
+        self.mapCurrentTime = currentTime //used for KeyDown time keeping
+        if isShowingMap || !didReturnFromMap{
+            if isShowingMap {//|| myPlayerNode.position.z > 80{
+                myCameraNode.constraints = nil
+                //self.myCameraNode.position.x = myPlayerNode.position.x//cameraStartPosition.x
+                //self.myCameraNode.position.y = myPlayerNode.position.y//cameraStartPosition.y
+                
+                // *****add camera movement for map*****
+                mapDeltaTime = currentTime - mapLastUpdateTime
+                mapLastUpdateTime = currentTime
+                
+                if isMapKeyPressed[.up]!{
+                    myCameraNode.position.y = myCameraNode.position.y + 1 * CGFloat(mapDeltaTime)*100
+                }else if isMapKeyPressed[.down]!{
+                    myCameraNode.position.y = myCameraNode.position.y - 1 * CGFloat(mapDeltaTime)*100
+                }
+                
+                if isMapKeyPressed[.left]!{
+                    myCameraNode.position.x = myCameraNode.position.x - 1 * CGFloat(mapDeltaTime)*100
+                }else if isMapKeyPressed[.right]!{
+                    myCameraNode.position.x = myCameraNode.position.x + 1 * CGFloat(mapDeltaTime)*100
+                }
+                
+                    //******* Map Movement Limit **************
+                
+                if myCameraNode.position.x > myMaze!.position.x + myMaze!.maxMapAreaXValue{
+                    myCameraNode.position.x = myMaze!.position.x + myMaze!.maxMapAreaXValue
+                }
+                if myCameraNode.position.x < myMaze!.position.x - myMaze!.minMapAreaXValue{
+                    myCameraNode.position.x = myMaze!.position.x - myMaze!.minMapAreaXValue
+                }
+                if myCameraNode.position.y > myMaze!.position.y + myMaze!.maxMapAreaYValue{
+                    myCameraNode.position.y = myMaze!.position.y + myMaze!.maxMapAreaYValue
+                }
+                if myCameraNode.position.y < myMaze!.position.y - myMaze!.minMapAreaYValue{
+                    myCameraNode.position.y = myMaze!.position.y - myMaze!.minMapAreaYValue
+                }
+                
+                    //*****************************************
+                
+                // *************************************
+                
+            }else if !isReturnToCurrentStageMap{
+                myCameraNode.constraints = nil
+                let lookAtPlayerConstraint = SCNLookAtConstraint(target: myPlayerNode)
+                lookAtPlayerConstraint.gimbalLockEnabled = false//true//false
+               myCameraNode.constraints = [lookAtPlayerConstraint]
+            }
+            //myCameraNode.constraints = nil
+            //myCameraNode.position = cameraStartPosition
+            //myGameScene.paused = true
+            return
+        }
         
         
         if myCameraNode == nil{
             self.setupCamera()
         }
         
-        if myCameraNode.constraints != nil{
+        //if myCameraNode.constraints != nil{
             myCameraNode.constraints = nil
-        }
+        //}
         
         if !myGameScene.isLeavingOldArea{
             //if myCameraNode.constraints != nil{
@@ -308,7 +588,7 @@ class GameViewController: NSViewController, SCNSceneRendererDelegate, SCNPhysics
             //}
         //}
 
-            leavingDeltaTime = 0
+            leavingAreaTime = 0
             leavingLastUpdateTime = currentTime
         
         
@@ -370,23 +650,24 @@ class GameViewController: NSViewController, SCNSceneRendererDelegate, SCNPhysics
             myCameraNode.position = SCNVector3(x: x , y: y, z: z)
             //myCameraNode.position.z = z
             cameraMovingtoNewAreaPosition = myCameraNode.position
+            currentCameraPosition = myCameraNode.position
             //c = 20 => max distance from camera to player c pow 2 = 400 = (x2 + y2) + z2 //blah
             
             //}else {
             
             //}
         }else if myGameScene.isLeavingOldArea{
-            
-            leavingDeltaTime += currentTime - leavingLastUpdateTime
+            let leavingDeltaTime = currentTime - leavingLastUpdateTime
+            leavingAreaTime += leavingDeltaTime//currentTime - leavingLastUpdateTime
             leavingLastUpdateTime = currentTime
             //myCameraNode.position = cameraMovingtoNewAreaPosition
             
-            if leavingDeltaTime > myGameScene.leavingTime{
+            if leavingAreaTime > myGameScene.leavingTime{
                 didChangeCameraForNewArea = false
                 willChangeCameraForNewArea = false
                 
             
-            }else if leavingDeltaTime > myGameScene.leavingTime/2{
+            }else if leavingAreaTime > myGameScene.leavingTime/2{
                 if !didChangeCameraForNewArea{
                     willChangeCameraForNewArea = true
                     
@@ -457,6 +738,10 @@ class GameViewController: NSViewController, SCNSceneRendererDelegate, SCNPhysics
     func updateMyPlayerNode(){
         if myPlayerNode == nil{
             self.addPlayerNode()
+        }
+        
+        if myGameScene.paused{//isShowingMap || !didReturnFromMap{
+            return
         }
         
         if !myGameScene.isLeavingOldArea{
@@ -540,19 +825,19 @@ class GameViewController: NSViewController, SCNSceneRendererDelegate, SCNPhysics
             //SCNTransaction.commit()
             
             //check if the Player has arrived in the new area
-            if leavingDeltaTime > myGameScene.leavingTime/2{
+            if leavingAreaTime > myGameScene.leavingTime/2{
                 var didReachNewArea:Bool = false
                 
                 if myPlayerNode.position.x.abs() < myGameScene.arrivingPosition.x.abs() && !isPlayerMovingToNewAreaVertically(){
                     
-                    if leavingDeltaTime > myGameScene.leavingTime {
+                    if leavingAreaTime > myGameScene.leavingTime {
                         didReachNewArea = true
                     }
                     
                     
                 }else if myPlayerNode.position.y.abs() < myGameScene.arrivingPosition.y.abs() && isPlayerMovingToNewAreaVertically(){
                     
-                    if leavingDeltaTime > myGameScene.leavingTime {
+                    if leavingAreaTime > myGameScene.leavingTime {
                         didReachNewArea = true
                     }
                     
@@ -561,7 +846,7 @@ class GameViewController: NSViewController, SCNSceneRendererDelegate, SCNPhysics
                 if didReachNewArea{
                     myGameScene.isLeavingOldArea = false
                     //Increase stage count / Level count
-                    myGameScene.stageUpLevelUp()
+                    //myGameScene.stageUpLevelUp() //done in afterArrivingInNewAreaAction in GameScene
                     //********************************
                     
                     myGameScene.arrivedInNewArea(myGameScene.arrivingPosition, playerVelocity: myGameScene.leavingVelocity)
@@ -672,9 +957,7 @@ class GameViewController: NSViewController, SCNSceneRendererDelegate, SCNPhysics
         //print("3D")
        // updateMyPlayerNode()
         
-        if self.myStageNode == nil{
-            print("FUUUUUUUUUUUCK")//self.setupEnvironment()
-        }
+        
         
     }
     //******************************
@@ -896,6 +1179,10 @@ class GameViewController: NSViewController, SCNSceneRendererDelegate, SCNPhysics
     private var sizeEffectSwitchCounter = 0
     
     private func deathScene(deltaTime: CFTimeInterval){
+        
+        if myGameScene.paused{
+            return
+        }
         
         let centerPoint = CGPoint(x: gameFrame.width/2, y: gameFrame.height/2)
         var differenceVector = CGPoint(x: centerPoint.x - myPlayer!.deathPosition.x, y: centerPoint.y - myPlayer!.deathPosition.y)

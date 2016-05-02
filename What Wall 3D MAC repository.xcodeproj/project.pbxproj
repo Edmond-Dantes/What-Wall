@@ -35,6 +35,7 @@
 		5E6AA1BC1C3B695C00624F14 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1BA1C3B695C00624F14 /* spark.png */; };
 		5E6AA1BD1C3B695C00624F14 /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1BB1C3B695C00624F14 /* star.png */; };
 		5E6AA1BF1C3B696D00624F14 /* bluecircle.png in Resources */ = {isa = PBXBuildFile; fileRef = 5E6AA1BE1C3B696D00624F14 /* bluecircle.png */; };
+		5EE92C7D1CD7291000E6F85F /* skeletonarm.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5EE92C7C1CD7291000E6F85F /* skeletonarm.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		5E6AA1BA1C3B695C00624F14 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		5E6AA1BB1C3B695C00624F14 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
 		5E6AA1BE1C3B696D00624F14 /* bluecircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluecircle.png; sourceTree = "<group>"; };
+		5EE92C7C1CD7291000E6F85F /* skeletonarm.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = skeletonarm.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 			children = (
 				5E6AA1BE1C3B696D00624F14 /* bluecircle.png */,
 				5E6AA1BA1C3B695C00624F14 /* spark.png */,
+				5EE92C7C1CD7291000E6F85F /* skeletonarm.jpg */,
 				5E6AA1BB1C3B695C00624F14 /* star.png */,
 				5E6AA1981C3B68B200624F14 /* Color.swift */,
 				5E6AA1991C3B68B200624F14 /* CornerBlock.swift */,
@@ -299,6 +302,7 @@
 				5E6AA1B61C3B68B200624F14 /* MyParticleSystem2.scnp in Resources */,
 				5E6AA1AB1C3B68B200624F14 /* GameScene.sks in Resources */,
 				5E6AA1BD1C3B695C00624F14 /* star.png in Resources */,
+				5EE92C7D1CD7291000E6F85F /* skeletonarm.jpg in Resources */,
 				5E6AA1B31C3B68B200624F14 /* MyParticle.sks in Resources */,
 				5E6AA1721C3B678A00624F14 /* Assets.xcassets in Resources */,
 				5E6AA1B11C3B68B200624F14 /* MazeScene.sks in Resources */,
@@ -475,8 +479,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "What Wall 3D MAC repository/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.future.What-Wall-3D-MAC-repository";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.11;
+				SUPPORTED_PLATFORMS = macosx;
 			};
 			name = Debug;
 		};
@@ -487,8 +494,11 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "What Wall 3D MAC repository/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.future.What-Wall-3D-MAC-repository";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.11;
+				SUPPORTED_PLATFORMS = macosx;
 			};
 			name = Release;
 		};
@@ -565,6 +575,7 @@
 				5E6AA1911C3B678A00624F14 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5E6AA1921C3B678A00624F14 /* Build configuration list for PBXNativeTarget "What Wall 3D MAC repositoryTests" */ = {
 			isa = XCConfigurationList;
@@ -573,6 +584,7 @@
 				5E6AA1941C3B678A00624F14 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5E6AA1951C3B678A00624F14 /* Build configuration list for PBXNativeTarget "What Wall 3D MAC repositoryUITests" */ = {
 			isa = XCConfigurationList;
@@ -581,6 +593,7 @@
 				5E6AA1971C3B678A00624F14 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

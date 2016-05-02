@@ -22,9 +22,9 @@ import Cocoa
 
 //var myEffectNodeGridResult = [SKNode]()
 //var myPhysicsMazeGrid = [SKNode]()
-var mySimpleMazeCalculator = [Int]()
+//var mySimpleMazeCalculator = [Int]()
 
-var myMaze:Maze? = nil
+//var myMaze:Maze? = nil
 
 //enum CollisionType:UInt32{
 //    case activeWall = 0b100, staticWall = 0b010, player = 0b001
@@ -62,7 +62,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         
         isStageBlinking = false
         let currentStage = myMaze?.escapePath[self.stage * 2]
-        myMaze?.mazeCellMatrix[currentStage!].alpha = 1.0
+ // *       myMaze?.mazeCellMatrix[currentStage!].alpha = 1.0
         
         isViewingMap = true
         self.runAction(SKAction.waitForDuration(1)){
@@ -75,20 +75,21 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         self.stage = STAGE
         if myMaze == nil{
         myMaze = Maze(level: CGFloat(level))
-        
+
         //allLevelMazes.append(myMaze)
-        self.addChild(myMaze!)
-//*********            self.addChild(levelNumberView)
+// *        self.addChild(myMaze!)
+// *********            self.addChild(levelNumberView)
         }else{
             if self.level != LEVEL{
                 self.level = LEVEL
-                myMaze?.removeFromParent()
+//  *              myMaze?.removeFromParent()
                 myMaze = Maze(level: CGFloat(level))
-                self.addChild(myMaze!)
+//  *             self.addChild(myMaze!)
                 levelNumberView.removeFromParent()
-//*********                self.addChild(levelNumberView)
+// *********                self.addChild(levelNumberView)
             }
         }
+
         
         //let levelNumberView = SKLabelNode(fontNamed: "Chalkduster")
         
@@ -136,7 +137,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                 if !isViewingMap{
                      //*************************
                     let currentStage = myMaze?.escapePath[self.stage * 2]
-                    myMaze?.mazeCellMatrix[currentStage!].alpha = 1.0
+// *                    myMaze?.mazeCellMatrix[currentStage!].alpha = 1.0
                     if isStageBlinking{
                         
                         self.removeAllActions()
@@ -194,8 +195,8 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func update(currentTime: NSTimeInterval) {
-        
-        
+/*
+ 
         if !isStageBlinking{
             isStageBlinking = true
             let currentStage = myMaze?.escapePath[self.stage * 2]
@@ -206,7 +207,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         
-
+*/
         
     }
     
@@ -230,7 +231,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
             isStageBlinking = false
             isChangingScene = false
             
-//*****            self.view?.presentScene(gameScene)
+// *****            self.view?.presentScene(gameScene)
             
         }
     }
